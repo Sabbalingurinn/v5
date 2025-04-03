@@ -1,0 +1,22 @@
+// src/app/globals.scss
+
+main {
+  font-family: sans-serif;
+  background-color: #fafafa;
+  color: #222;
+  margin: 0;
+  padding: 2rem;
+}
+
+h1 {
+  color: #444;
+}
+
+a {
+  color: #0070f3;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
