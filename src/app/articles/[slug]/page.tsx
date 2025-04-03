@@ -1,28 +1,30 @@
+// src/app/articles/[slug]/page.tsx
+
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+
+import { getArticles } from '@/lib/dataocms';
 import Link from 'next/link';
-import { getArticles } from '../../../lib/dataocms';
+import { notFound } from 'next/navigation';
 
-export async function generateStaticParams() {
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
   const articles = await getArticles();
-  return articles.map((article) => ({
-    slug: article.slug,
-  }));
+  return articles.map((article) => ({ slug: article.slug }));
 }
 
-interface Props {
-  params: { slug: string };
-}
-
-export default async function ArticlePage({ params }: Props) {
+// 👇 Lausnin hér: við týpum ekki neitt sjálf – látum Next.js sjá um params
+export default async function ArticlePage(props: any) {
+  const slug = props?.params?.slug;
   const articles = await getArticles();
-  const article = articles.find((a) => a.slug === params.slug);
+  const article = articles.find((a) => a.slug === slug);
 
-  if (!article) return <p>Grein fannst ekki.</p>;
+  if (!article) return notFound();
 
   return (
     <main>
       <h1>{article.title}</h1>
-      <p>{articles[0].content}</p>
-      <Link href='/articles'>Til baka!</Link>
+      <p>{article.content}</p>
+      <Link href="/articles">Til baka!</Link>
     </main>
   );
 }
